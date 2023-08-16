@@ -30,7 +30,7 @@ if cpf_lista:
         #print(Teste1) 
         Soma1 += Teste1
         #print(Soma1)
-    verificacao1 = math.ceil((Soma1 / 11) - 11)
+    verificacao1 = math.ceil(11 - (Soma1 % 11))
     #print(verificacao1)
 
     
