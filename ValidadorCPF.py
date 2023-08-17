@@ -1,67 +1,69 @@
-import math
+MaxNumCPF = 11             # Numero maximo de caracteres para o CPF
+contador_1 = 10            # Contador da conta da primeira verificação
+contador_2 = 10            # Contador da conta da segunda verificação
+Soma_1 = 0                 # Soma necessaria para primeira verificação 
+Soma_2 = 0                 # Soma necessaria para segunda verificação
 
-#Usuario escreve o CPF
-MaxNumCPF = 11
-contador1 = 10
-contador2 = 10
-Soma1 = 0
-Soma2 = 0
 
-def InputUser(mensagem):
+def InputUser(mensagem): 
     while True:
         UserCPF = input(mensagem)
+        #verifica se tem somente digitos e tem exatamente 11 caracteres
         if UserCPF.isdigit() and len(UserCPF) == 11:  # Verifica se a entrada tem 11 dígitos
             cpf_numeros = [int(digito) for digito in UserCPF]  # Cria uma lista com os dígitos do CPF
             return cpf_numeros
-        
-
-        else:
-            print("Entrada inválida.")
-
-
-cpf_lista = InputUser("Digite o CPF (11 dígitos): ")
-lista_origem = cpf_lista
-
-if cpf_lista:
-    cpf_lista = cpf_lista[:-2]
-    for numero in cpf_lista:
-        Teste1 = numero * contador1
-        contador1 -= 1
-        #print(Teste1) 
-        Soma1 += Teste1
-        #print(Soma1)
-    verificacao1 = math.ceil(11 - (Soma1 % 11))
-    #print(verificacao1)
-
     
+        else:
+            print("Entrada inválida. Tente novamente")
 
-    #print("CPF digitado:", cpf_lista)
-    #print("A função foi concluída com sucesso.")
+
+CPF_lista = InputUser("Digite o CPF (11 dígitos): ")
+lista_origem = CPF_lista
+
+#Conta da verificação do 10° digito do CPF
+if CPF_lista:
+    CPF_lista = CPF_lista[:-2]
+    for numero in CPF_lista:
+        Teste_1 = numero * contador_1
+        contador_1 -= 1 
+        Soma_1 += Teste_1
+    verificacao_1 = (Soma_1 % 11)
 else:
     print("A função não foi concluída.")
 
-cpf_lista2 = cpf_lista
-if verificacao1 == lista_origem[9]:
-    #print("ok")
-    cpf_lista2.append(verificacao1)
-    cpf_lista2.pop(0)
-    #print(cpf_lista2)
+#Verifica se a sobra é menor que 2. se for, o 10° digito é 0
+if verificacao_1 < 2:
+    testeFinal_1 = 0
+else:
+    testeFinal_1 = 11 - verificacao_1
 
-    for numero in cpf_lista2:
-        Teste2 = numero * contador2
-        contador2 -= 1
-        #print(Teste2) 
-        Soma2 += Teste2
-        #print(Soma2)
-        verificacao2 = math.ceil((Soma2 / 11) - 11)
-        #print(verificacao2)
+
+#Conta da verificação do 11° digito
+CPF_lista_2 = CPF_lista
+
+#Confirmação da conta do 10° digito
+if testeFinal_1 == lista_origem[9]:
+    CPF_lista_2.append(testeFinal_1)
+    CPF_lista_2.pop(0)
+
+    for numero in CPF_lista_2:
+        Teste_2 = numero * contador_2
+        contador_2 -= 1
+        Soma_2 += Teste_2
+        verificacao_2 = (Soma_2 % 11)
+
 else:
     print('sheeeeeeesh')
 
+#Verifica se a sobra é menor que 2. se for, o 11° digito é 0
+if verificacao_2 < 2:
+    testeFinal_2 = 0
+else:
+    testeFinal_2 = 11 - verificacao_2
 
-testeFinal = verificacao2 - verificacao1
-print(testeFinal)
 
-if testeFinal == lista_origem[10]:
-    print("ZERADO")
-
+#Confirmação da conta do 11° digito. 
+if testeFinal_2 == lista_origem[10]:
+    print("CPF VALIDO")
+else:
+    print("CPF INVALIDO")
